@@ -8,7 +8,7 @@ sub=$(</dev/urandom tr -dc a-z0-9 | head -c4)
 echo $sub > /root/cfku
 SUB_DOMAIN=${sub}.m-ridhoizzi.my.id
 CF_ID=ciegantengkallm9@gmail.com
-CF_KEY=b5aafed4bb2a6ba81eef01f9a622dab288dd6
+CF_KEY=9d2743a9350c012630df7069c265bc09
 echo "m-ridhoizzi.my.id" > /root/domain
 echo $SUB_DOMAIN > /root/domain
 
