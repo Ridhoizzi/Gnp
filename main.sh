@@ -1,4 +1,5 @@
 #!/bin/bash
+
 ### Color
 Green="\e[92;1m"
 RED="\033[31m"
@@ -19,18 +20,18 @@ TANGGAL=$(date '+%Y-%m-%d')
 TIMES="10"
 NAMES=$(whoami)
 IMP="wget -q -O"    
-CHATID="1969671324"
+CHATID="5491480146"
 LOCAL_DATE="/usr/bin/"
 MYIP=$(wget -qO- ipinfo.io/ip)
 ISP=$(wget -qO- ipinfo.io/org)
 CITY=$(curl -s ipinfo.io/city)
 TIME=$(date +'%Y-%m-%d %H:%M:%S')
 RAMMS=$(free -m | awk 'NR==2 {print $2}')
-KEY="6411757949:AAGI-ASQjxH0jsu-tBuvqPMOFnY1ulj-0tg"
+KEY="6042674179:AAE_8Jd3b4KIhiLDy1zJ1YhVgFz1q_SQjZI"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
-REPO="https://raw.githubusercontent.com/Ridhoizzi/Gnp/main/"
-CDNF="https://raw.githubusercontent.com/Ridhoizzi/Gnp/main/"
-APT="apt-get -y install"
+REPO="https://raw.githubusercontent.com/citralinggau/abc/main/"
+CDNF="https://raw.githubusercontent.com/citralinggau/abc/main"
+APT="apt-get -y install "
 domain=$(cat /root/domain)
 start=$(date +%s)
 secs_to_human() {
@@ -102,7 +103,6 @@ function base_package() {
     apt-get clean all; sudo apt-get autoremove -y
     apt-get install vnstat -y
     apt-get install lolcat -y
-    apt-get install lsof -y
     gem install lolcat
     print_ok "Berhasil memasang paket yang dibutuhkan"
 }
@@ -130,7 +130,7 @@ function dir_xray() {
 
 ### Tambah domain
 function add_domain() {
-    LOGO
+    echo "`cat /etc/banner`" | lolcat
     echo -e "${red}    ♦️${NC} ${green} CUSTOM SETUP DOMAIN VPS     ${NC}"
     echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
     echo "1. Use Domain From Script / Gunakan Domain Dari Script"
@@ -423,6 +423,21 @@ cat >/root/tmp <<-END
 ### Geostoretunnel $TANGGAL $MYIP
 END
 ####
+KYTPROJECT() {
+    data=($(cat /root/tmp | grep -E "^### " | awk '{print $2}'))
+    for user in "${data[@]}"; do
+        exp=($(grep -E "^### $user" "/root/tmp" | awk '{print $3}'))
+        d1=($(date -d "$exp" +%s))
+        d2=($(date -d "$Date_list" +%s))
+        exp2=$(((d1 - d2) / 86400))
+        if [[ "$exp2" -le "0" ]]; then
+            echo $user >/etc/.$user.ini
+        else
+            rm -f /etc/.$user.ini
+        fi
+    done
+    rm -f /root/tmp
+}
 
 function enable_services(){
     print_install "Restart servis"
@@ -449,7 +464,7 @@ echo "Banner /etc/issue.net" >>/etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
 
 # Ganti Banner
-wget -O /etc/issue.net "${REPO}issue.net"
+wget -O /etc/issue.net "${REPO}/issue.net"
 
 sleep 4
 }
@@ -469,23 +484,17 @@ function install_all() {
 }
 
 function finish(){
-    USRSC=$(curl -sS https://raw.githubusercontent.com/myridwan/izinvps/ipuk/ip | grep $MYIP | awk '{print $2}')
-    EXPSC=$(curl -sS https://raw.githubusercontent.com/myridwan/izinvps/ipuk/ip | grep $MYIP | awk '{print $3}')
-    TIMEZONE=$(printf '%(%H:%M:%S)T')
     TEXT="
-<code>────────────────────</code>
-<b>⚠️AUTOSCRIPT PREMIUM⚠️</b>
-<code>────────────────────</code>
-<code>Owner  : </code><code>$USRSC</code>
-<code>Domain : </code><code>$domain</code>
-<code>Date   : </code><code>$TIME</code>
-<code>Time   : </code><code>$TIMEZONE</code>
-<code>Ip vps : </code><code>$MYIP</code>
-<code>Exp Sc : </code><code>$EXPSC</code>
-<code>────────────────────</code>
-<i>Automatic Notification from</i>
-<i>Github KytTunnel</i> 
-"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ🐳","url":"https://t.me/kytxz"},{"text":"ɪɴꜱᴛᴀʟʟ🐬","url":"https://t.me/rstorx/1"}]]}'
+<u>INFORMATION VPS INSTALL SC</u>
+<code>TIME      : </code><code>${TIME}</code>
+<code>IPVPS     : </code><code>${MYIP}</code>
+<code>DOMAIN    : </code><code>${domain}</code>
+<code>ISP       : </code><code>${ISP}</code>
+<code>LOKASI    : </code><code>${CITY}</code>
+<code>USER      : </code><code>${NAMES}</code>
+<code>RAM       : </code><code>${RAMMS}MB</code>
+<code>LINUX     : </code><code>${OS}</code>
+"
     curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
     cp /etc/openvpn/*.ovpn /var/www/html/
     # sed -i "s/xxx/${domain}/g" /var/www/html/index.html
@@ -496,8 +505,6 @@ function finish(){
 
     # > Bersihkan History
     alias bash2="bash --init-file <(echo '. ~/.bashrc; unset HISTFILE')"
-    clear
-    LOGO 
     clear
     echo "    ┌─────────────────────────────────────────────────────┐"
     echo "    │       >>> Service & Port                            │"
@@ -560,4 +567,3 @@ finish
 #rm ~/.bash_history
 sleep 10
 reboot
-
