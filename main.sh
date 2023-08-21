@@ -13,81 +13,7 @@ GRAY="\e[1;30m"
 NC='\e[0m'
 red='\e[1;31m'
 green='\e[0;32m'
-function LOGO() {
-    echo -e "
-    ┌───────────────────────────────────────────────┐
- ───│                                               │───
- ───│    $Green┌─┐┬ ┬┌┬┐┌─┐┌─┐┌─┐┬─┐┬┌─┐┌┬┐  ┬  ┬┌┬┐┌─┐$NC   │───
- ───│    $Green├─┤│ │ │ │ │└─┐│  ├┬┘│├─┘ │   │  │ │ ├┤ $NC   │───
- ───│    $Green┴ ┴└─┘ ┴ └─┘└─┘└─┘┴└─┴┴   ┴   ┴─┘┴ ┴ └─┘$NC   │───
-    │    ${YELLOW}Copyright${FONT} (C)$GRAY https://github.com/Kytxz$NC     │
-    └───────────────────────────────────────────────┘
-         ${RED}Autoscript xray vpn lite (multi port)${FONT}    
-${RED}Make sure the internet is smooth when installing the script${FONT}
-        "
 
-}
-KytTunneling() {
-MYIP=$(curl -sS ipv4.icanhazip.com)
-    IZIN=$(curl -sS https://raw.githubusercontent.com/Ridhoizzi/izinvps/main/ip | awk '{print $4}' | grep $MYIP)
-    if [ "$MYIP" = "$IZIN" ]; then
-        TIMEDATE
-    else
-        res="Permission Denied!"
-    fi
-    KYTPROJECT
-}
-KYTPROJECT() {
-    curl -sS https://raw.githubusercontent.com/Ridhoizzi/izinvps/main/ip >/root/tmp
-    data=($(cat /root/tmp | grep -E "^### " | awk '{print $2}'))
-    for user in "${data[@]}"; do
-        exp=($(grep -E "^### $user" "/root/tmp" | awk '{print $3}'))
-        d1=($(date -d "$exp" +%s))
-        d2=($(date -d "$Date_list" +%s))
-        exp2=$(((d1 - d2) / 86400))
-        if [[ "$exp2" -le "0" ]]; then
-            echo $user >/etc/.$user.ini
-        else
-            rm -f /etc/.$user.ini
-        fi
-    done
-    rm -f /root/tmp
-}
-TIMEDATE() {
-    if [ -f "/etc/.$NAMECOM.ini" ]; then
-        CekTwo=$(cat /etc/.$NAMECOM.ini)
-        if [ "$CekOne" = "$CekTwo" ]; then
-            res="Expired"
-        fi
-    else
-        res="Permission Accepted..."
-    fi
-}
-apete_eee() {
-    KytTunneling
-    if [ -f /home/needupdate ]; then
-        red "Your script need to update first !"
-        exit 0
-    elif [ "$res" = "Permission Accepted..." ]; then
-        echo -ne
-    else
-        clear
-        echo ""
-        red "Permission Denied! Please Buy Licence"
-        green "Contact telegram https://t.me/kytxz"
-        sleep 8
-        exit 0
-    fi
-}
-apete_eee
-clear
-LOGO
-echo -e "${RED}JANGAN INSTALL SCRIPT INI MENGGUNAKAN KONEKSI VPN!!!${FONT}"
-echo -e ""
-echo -e "${Green}DNS POINTING${FONT}(DNS-resolved IP address of the domain)"
-echo -e "${Green}Menuju Proses Penginstalan Dalam 8 Detik Lagi !!!"
-echo ""
-sleep 8
 ### System Information
 TANGGAL=$(date '+%Y-%m-%d')
 TIMES="10"
@@ -104,7 +30,7 @@ KEY="6411757949:AAGI-ASQjxH0jsu-tBuvqPMOFnY1ulj-0tg"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
 REPO="https://raw.githubusercontent.com/Ridhoizzi/Gnp/main/"
 CDNF="https://raw.githubusercontent.com/Ridhoizzi/Gnp/main/"
-APT="apt-get -y install "
+APT="apt-get -y install"
 domain=$(cat /root/domain)
 start=$(date +%s)
 secs_to_human() {
